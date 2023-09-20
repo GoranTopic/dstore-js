@@ -46,10 +46,12 @@ try{  // get the check list form memory
 
 
 class Storage {
-    constructor({ type, path, keyValue }){
+    constructor({ type, path, keyValue, mutex }){
         this.type = type;
         this.path = path;
         this.keyValue = keyValue;
+        this.mutex = mutex;
+        // use a big number to avoid collisions
         this.index = 0;
     }
 
