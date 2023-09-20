@@ -7,7 +7,7 @@ Storage-js
 ```
 npm install storage-js
 ```
-## Type JSON
+## JSON Type
 ```javascript
 import Storage from 'storage-js'
 
