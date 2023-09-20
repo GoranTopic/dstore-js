@@ -1,6 +1,6 @@
 Storage-js
 =======
-#### ever wish writting stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fred no more. 
+#### Ever wish writing stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fret no more. 
 
 
 ## Installation
