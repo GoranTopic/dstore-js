@@ -39,12 +39,11 @@ await store.delete()
 ```
 
 ## Options
+```javascript
 new Storage({
   type, // type of db to be used. ex: json, cvs, sqlite,               
   path, // path where to store the db                   
   keyValue, // are we using a keyvalue pair to store data?  default: false           
   mutex, // use a mutex to avoid collisions? default: true
   })
-
-
-## Options
+```
