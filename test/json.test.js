@@ -4,7 +4,7 @@ import chai from 'chai';
 const expect = chai.expect
 import fs from 'fs';
 
-describe('test Json Storage basic functinality', () => {
+describe('JSON Storage', () => {
     let storage = new Storage({
         type: 'json',
         keyvalue: false,
@@ -12,8 +12,8 @@ describe('test Json Storage basic functinality', () => {
     let name = 'json_test';
     // create a new storage
     let json_store = storage.open(name);
-    // check if direcotry was created
     test('directory created', () => {
+        // check if direcotry was created
         assert.equal(fs.existsSync('./storage/' + name), true);
     })
 
@@ -21,5 +21,8 @@ describe('test Json Storage basic functinality', () => {
         await json_store.delete();
         assert.equal(fs.existsSync('./storage/' + name), false);
     })
-});
+
+
+})
+
 

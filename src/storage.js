@@ -105,39 +105,39 @@ class Store {
     async set(first, second) {
         let { key, value } = this._handleInputs(first, second);
         return await this.mutex.runExclusive(async () => {
-            await storage.set(key, value);
+            await this.storage.set(key, value);
         });
     }
     
 
     async get(key) {
         return await this.mutex.runExclusive(async () => {
-            return await storage.get(key);
+            return await this.storage.get(key);
         });
     }
 
     async getAll() {
         return await this.mutex.runExclusive(async () => {
-            return await storage.getAll();
+            return await this.storage.getAll();
         });
     }
 
     async has(key) {
         return await this.mutex.runExclusive(async () => {
-            return (await storage.get(key))? true : false;
+            return (await this.storage.get(key))? true : false;
         });
     }
 
     async remove(key) {
         return await this.mutex.runExclusive(async () => {
-            return await storage.remove(key);
+            return await this.storage.remove(key);
         });
     }
 
     async delete() {
         return await this.mutex.runExclusive(async () => {
             console.log('delete mutex run');
-            return await storage.delete();
+            return await this.storage.delete();
         });
     }
 
