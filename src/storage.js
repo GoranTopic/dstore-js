@@ -1,11 +1,11 @@
 import fs from 'fs';
 import osPath from 'path';
-import parsePath from '../utils/parsePath.js';      
+import parsePath from './utils/parsePath.js';      
 import { Mutex } from 'async-mutex';
 import cvsStorage from './modules/cvsStorage.js';
 import sqliteStorage from './modules/sqliteStorage.js';
 import jsonStorage from './modules/jsonStorage.js';
-import JsonFileStorage from './modules/jsonFileStorage.js';
+import jsonFileStorage from './modules/jsonFileStorage.js';
 import binaryStorage from './modules/binaryStorage.js';
 
 /*
@@ -43,11 +43,14 @@ try{  // get the check list form memory
             this._tmp_path = path
 */
 
+
+
 class Storage {
-    constructor({ type, path, keyValue }) {
-        this.keyValue = keyValue;
-        this.path = path;
+    constructor({ type, path, keyValue }){
         this.type = type;
+        this.path = path;
+        this.keyValue = keyValue;
+        this.index = 0;
     }
 
     open(name) {
@@ -66,8 +69,8 @@ class Store {
         // handle type
         if(type === 'json') 
             this.storage = new jsonStorage(path);
-        if(type === 'jsonFile')
-            this.storage = new JsonFileStorage(path);
+        else if(type === 'jsonFile')
+            this.storage = new jsonFileStorage(path);
         else if(type === 'cvs')
             this.storage = new cvsStorage(path);
         else if(type === 'sqlite')
@@ -87,17 +90,14 @@ class Store {
             path = osPath.join(process.cwd(), 'storage');
         // create the directory if it does not exist
         if(!fs.existsSync(path)) fs.mkdirSync(path);
-        // directory with name
-        path = osPath.join(path, name);
         // if the file does not exist
         if(!fs.existsSync(path)) fs.mkdirSync(path);
-
+        // handle keyValue
+        this.keyValue = keyValue ?? false;
         // handle mutex
         this.mutex = new Mutex();
-
         // open data base
         this.storage.open({name, path});
-
     }
 
     async set(first, second) {
@@ -106,6 +106,7 @@ class Store {
             await storage.set(key, value);
         });
     }
+    
 
     async get(key) {
         return await this.mutex.runExclusive(async () => {
@@ -133,6 +134,7 @@ class Store {
 
     async delete() {
         return await this.mutex.runExclusive(async () => {
+            console.log('delete mutex run');
             return await storage.delete();
         });
     }
@@ -148,6 +150,9 @@ class Store {
         }
         return { key, value };
     }
+
+    add = this.set;
+    push = this.set;
 
 }
 
