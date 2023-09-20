@@ -1,13 +1,13 @@
 Storage-js
 =======
-#### ever wish writting stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fred no more. 
+#### Ever wish writing stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fret no more. 
 
 
 ## Installation
 ```
 npm install storage-js
 ```
-## Type JSON
+## JSON Type
 ```javascript
 import Storage from 'storage-js'
 
@@ -39,12 +39,11 @@ await store.delete()
 ```
 
 ## Options
+```javascript
 new Storage({
   type, // type of db to be used. ex: json, cvs, sqlite,               
   path, // path where to store the db                   
   keyValue, // are we using a keyvalue pair to store data?  default: false           
   mutex, // use a mutex to avoid collisions? default: true
   })
-
-
-## Options
+```
