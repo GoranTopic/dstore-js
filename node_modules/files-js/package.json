@@ -1,6 +1,6 @@
 {
   "name": "files-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is my personal library for handling files in nodejs ",
   "main": "index.js",
   "type": "module",

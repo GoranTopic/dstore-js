@@ -10,9 +10,10 @@ import fs from 'fs'
  * @param {} path
  */
 const write_json = (obj, path, options={}) => {
+    let { format } = options;
     let quiet = options.quiet ?? true;
     try{
-        let str = JSON.stringify(obj)
+        let str = JSON.stringify(obj, null, format? 4 : 1);
         fs.writeFileSync(path, str);
         return true
     }catch(e) {

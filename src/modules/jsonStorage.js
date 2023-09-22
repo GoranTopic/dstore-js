@@ -4,7 +4,6 @@ import osPath from 'path';
 class jsonStorage {
 
     async open({name, path}){
-        console.log('open ran');
         // let make a dir with the name on the path
         path = osPath.join(path, name);
         mkdir(path);
@@ -14,15 +13,18 @@ class jsonStorage {
 
     async set(key, value) {
         // if key is a number, convert it to string
-        if (typeof key === 'number') key = this._convet_to_string_int(key);
+        if (typeof key === 'number')
+            key = this._convet_to_string_int(key);
         // check if value is a js object
         if (typeof value !== 'object') {
             throw new Error('value must be a js object');
         }
-        return write_json(osPath.join(this.path, key + '.json'), value);
+        return write_json(value, osPath.join(this.path, key + '.json'), { format: true })
     }
 
     async get(key) {
+        if (typeof key === 'number')
+            key = this._convet_to_string_int(key);
         return read_json(osPath.join(this.path, key + '.json'));
     }
 
@@ -30,17 +32,18 @@ class jsonStorage {
         let files = ls_files(this.path);
         let jsons = [];
         // for each file, read it and return it
-        for (let i = 0; i < files.length; i++) 
-            jsons.push(read_json(files[0]));
+        for ( let file of files )
+            jsons.push(read_json( osPath.join(this.path, file) ));
         return jsons;
     }
 
     async remove(key) {
+        if (typeof key === 'number')
+            key = this._convet_to_string_int(key);
         return delete_json(osPath.join(this.path, key + '.json'));
     }
 
     async delete() {
-        console.log('delete ran');
         let files = ls_files(this.path);
         for (let i = 0; i < files.length; i++) 
             delete_json(files[0]);
@@ -49,13 +52,15 @@ class jsonStorage {
     }
 
     _convet_to_string_int(number) {
-        let n = 5; // Change this to the number of zeros you want to add
+        let n = 10; // Change this to the number of zeros you want to add
         // convert number to string
-        let integerStr = integerNumber.toString();
+        let integerStr = number.toString();
         // get the number of digits
         let digits = integerStr.length;
-        // Step 3: Concatenate zeros to the left
+        // Concatenate zeros to the left
         let resultStr = "0".repeat(n - digits) + integerStr;
+        // Return the result
+        return resultStr;
     }
 }
 

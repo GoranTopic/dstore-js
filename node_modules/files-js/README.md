@@ -2,12 +2,22 @@
 
 ## My personal library to handle files in nodejs 
 
-### Syncronous function
+### Install
+```bash
+npm i files-js
+```
+
+### Import
+```javascript
+import { file_exists, ls_dir, mkdir, write_file, read_file } from 'files-js';
+```
+
+### Synchronous function
 
 #### file_exists. 
 ```javascript
 /*
-returns true if file exists
+returns true if the file exists
 @param {String} path
 */
 file_exists(path)
@@ -26,7 +36,7 @@ file_not_exists(path)
 #### ls_dir.
 ```javascript
 /*
-list all file from directory path
+list all files from a directory path
 this function returns a list of all values from a directory
 @param String path
 */
@@ -38,7 +48,7 @@ ls_dir(path)
 ```javascript
 /*
 list directories
-this function returns a list of directoris with in the passed directory
+this function returns a list of directories within the passed directory
 @param String path
 */
 ls_dirs(path)
@@ -48,8 +58,8 @@ ls_dirs(path)
 #### ls_files.
 ```javascript
 /*
-list all files in directory
-this function returns a list of files with in the passed directory
+list all files in a directory
+this function returns a list of files within the passed directory
 @param String path
 */
 ls_files(path)
@@ -59,8 +69,8 @@ ls_files(path)
 #### mkdir.
 ```javascript
 /*
-this is a humble function that make a directory that is passed
-if creates the directories recursibly
+this is a humble function that makes a directory that is passed
+If the directories recursively
 @param {string} path to directory
 relative paths are from the current working dir
 ex:./data/mined/companies
@@ -72,18 +82,18 @@ mkdir(path)
 #### write_file.
 ```javascript
 /*
-this is a humble function that make a file a writes a string on it
+this is a humble function that makes a file and writes a string on it
 @param {string} path to directory
 @param {string} string to be written
 */
-write_file((path, string = ''))
+write_file(path, string = '')
 ```
 
 
 #### read_file.
 ```javascript
 /*
-reads a text from a file returns as a string
+reads a text from a file and returns as a string
 @param {string} path to directory
 */
 read_file(path)
@@ -93,7 +103,7 @@ read_file(path)
 #### mv.
 ```javascript
 /*
-remove an file
+remove a file
 @param {String} from_path
 @param {String} to_path
 */
@@ -104,7 +114,7 @@ mv(from_path, to_path)
 #### rm_file.
 ```javascript
 /*
-remove an file
+remove a file
 @param {String} path
 */
 rm_file(pat)
@@ -114,7 +124,7 @@ rm_file(pat)
 #### rm_dir.
 ```javascript
 /*
-remove an directory, with options can be passed
+remove a directory, with options, can be passed
 @param {String} path
 @obj {
   recursive: true
@@ -124,7 +134,7 @@ remove an directory, with options can be passed
 rm_dir(path, options)
 ```
    
-### Json Functions
+### JSON Functions
 
 #### write_json.
 ```javascript
@@ -157,7 +167,7 @@ delete_json(path)
 #### read_binary.
 ```javascript
 /*
-this function reads a binary file from disk
+this function reads a binary file from the disk
 return a binary buffer obj
 @param {} path
 */
