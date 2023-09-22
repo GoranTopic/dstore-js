@@ -2,25 +2,25 @@ import Storage from '../index.js'
 import assert from 'assert';
 import fs from 'fs';
 
-describe('sql Storage functionality', () => {
+describe('jsonFile Storage functionality', () => {
     let storage = new Storage({
-        type: 'sqlite',
+        type: 'jsonFile',
         keyValue: false,
     });
     // 
     let json = { str: 'test', num: 123, bool: true };
     let jsons = Array(10).fill(json).map((item, index) => ({ ...item, index: index }));
-    let name = 'sqlite_test';
+    let name = 'jsonFile_test';
     let func = () => { console.log("hello") };
     let bool = true;
     let num = 123;
     let str = 'test';
     let store;
-    test('directory created', async () => {
+    test('create json file', async () => {
         // check if direcotry was created
         // create a new storage
         store = await storage.open(name);
-        assert.equal(fs.existsSync('./storage/' + name + '.sqlite'), true);
+        assert.equal(fs.existsSync('./storage/' + name + '.json'), true);
     }) 
 
     // save json file
@@ -53,7 +53,6 @@ describe('sql Storage functionality', () => {
         assert.deepEqual(data, bool);
     })
 
-
     // save number
     test('save number', async () => {
         await store.set(num);
@@ -68,7 +67,7 @@ describe('sql Storage functionality', () => {
         assert.deepEqual(data, str);
     })
 
-    test('deletr function, boolean, number, string', async () => {
+    test('delete function, boolean, number, string', async () => {
         await store.remove(2);
         await store.remove(3);
         await store.remove(4);
@@ -98,12 +97,12 @@ describe('sql Storage functionality', () => {
 
 describe('Sqlite Storage keyvalue', () => {
     let storage = new Storage({
-        type: 'sqlite',
+        type: 'jsonFile',
         keyValue: true,
     });
-    let name = 'sqlite_test_keyvalue';
+    let name = 'jsonFile_test_keyvalue';
     // fill with ramdom alphanumric keys
-    let keys = Array(10).fill(0).map(() => Math.random().toString(36).substring(7));
+    let keys = Array(1000).fill(0).map(() => Math.random().toString(36).substring(7));
     let json = { str: 'test', num: 123, bool: true };
     // create a new storage
     let store;
@@ -111,7 +110,7 @@ describe('Sqlite Storage keyvalue', () => {
         // check if direcotry was created
         // create a new storage
         store = await storage.open(name);
-        assert.equal(fs.existsSync('./storage/' + name + '.sqlite'), true);
+        assert.equal(fs.existsSync('./storage/' + name + '.json'), true);
     }) 
     
     test('save and get file', async () => {
@@ -151,7 +150,7 @@ describe('Sqlite Storage keyvalue', () => {
     // delete everything
     test('directory deleted', async () => { 
         await store.delete();
-        assert.equal(fs.existsSync('./storage/' + name + '.sqlite'), false);
+        assert.equal(fs.existsSync('./storage/' + name + '.json'), false);
     }, 100000000)
 
 })

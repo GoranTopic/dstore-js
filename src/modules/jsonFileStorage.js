@@ -1,29 +1,54 @@
-class SomeStorage{
+import { write_json, read_json, delete_json, mkdir, ls_files, rm_dir } from 'files-js'
+import osPath from 'path';
+
+class jsonFileStorage {
 
     async open({name, path}){
-        // this function opens the storage
+        // let make a dir with the name on the path
+        this.path = osPath.join(path, `${name}.json`);
+        // hole entire json in memory
+        this.json = {};
+        // if file exists, read it
+        if (read_json(this.path)) this.json = read_json(this.path);
+        // write the json to the file, otherwise create the file
+        else write_json(this.json, this.path, { format: true });
     }
 
-    async set(key, value){
-        // this function sets a value for a key
+    async set(key, value) {
+        // convet key which can be any type to string
+        key = String(key);
+        // add to json
+        this.json[key] = value;
+        // write to file
+        write_json(this.json, this.path, { format: true });
     }
 
     async get(key) {
-        // this function retrives a value with a key
+        // convet key which can be any type to string
+        key = String(key);
+        return this.json[key];
     }
 
     async getAll() {
-        // this function returns all the values in the storage
+        // return all values in json
+        return Object.values(this.json);
     }
 
     async remove(key) {
-        // this function removes a value with a key
+        key = String(key);
+        // remove key from json in memory
+        delete this.json[key];
+        // write to file
+        write_json(this.json, this.path, { format: true });
     }
 
     async delete() {
-        // this function deletes the entire storage
+        // delete the file
+        this.json = {};
+        delete_json(this.path);
     }
 
 }
 
-export default SomeStorage;
+export default jsonFileStorage;
+
