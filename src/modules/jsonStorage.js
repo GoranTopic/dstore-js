@@ -33,7 +33,11 @@ class jsonStorage {
         let jsons = [];
         // for each file, read it and return it
         for ( let file of files )
-            jsons.push(read_json( osPath.join(this.path, file) ));
+            // get base name if file 
+            jsons.push( { 
+                key: osPath.basename(file, '.json'), 
+                value: read_json( osPath.join(this.path, file) )
+            } );
         return jsons;
     }
 

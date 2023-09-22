@@ -53,9 +53,13 @@ class sqliteStorage {
 
     async getAll() {
         // this function returns all the values in the storage
-        const results = await this.db.all(`SELECT value, type FROM storage`)
-        if(!results) return undefined
-        let values = results.map(result => this._parseString(result.value, result.type))
+        const results = await this.db.all(`SELECT key, value, type FROM storage`)
+        if(results.length === 0) return []
+        // convert the values to the original type
+        let values = results.map(result => ({ 
+            key: result.key,
+            value: this._parseString(result.value, result.type) 
+        }));
         return values
     }
 

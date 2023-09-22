@@ -1,4 +1,4 @@
-import { write_json, read_json, delete_json, mkdir, ls_files, rm_dir } from 'files-js'
+import { write_json, read_json, delete_json } from 'files-js'
 import osPath from 'path';
 
 class jsonFileStorage {
@@ -31,7 +31,10 @@ class jsonFileStorage {
 
     async getAll() {
         // return all values in json
-        return Object.values(this.json);
+        let data = [];
+        if(this.json)
+            data = Object.keys(this.json).map(key => ({ key, value: this.json[key] }));
+        return data;
     }
 
     async remove(key) {

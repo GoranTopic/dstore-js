@@ -13,13 +13,6 @@ import binaryStorage from './modules/binaryStorage.js';
 this._name = ( name ? name :  
     hash(values, { unorderedArrays: true } )) + ".json"
 
-let tmp_path = '';
-// if it is windows, set the tmp path to the user temp folder
-if(os.platform() === 'win32') tmp_path = os.tmpdir();
-// if it is on linux, set the tmp path to /tmp/checklists
-else if(os.platform() === 'linux') tmp_path = '/tmp/';
-// if it is on mac, set the tmp path to /tmp/checklists
-else if(os.platform() === 'darwin') tmp_path = '/tmp/';
 
 // try to read the file from memeory
 try{  // get the check list form memory
