@@ -2,6 +2,8 @@ import Storage from '../index.js'
 import assert from 'assert';
 import fs from 'fs';
 
+let test_size = 100;
+
 describe('sql Storage functionality', () => {
     let storage = new Storage({
         type: 'sqlite',
@@ -9,7 +11,7 @@ describe('sql Storage functionality', () => {
     });
     // 
     let json = { str: 'test', num: 123, bool: true };
-    let jsons = Array(10).fill(json).map((item, index) => ({ ...item, index: index }));
+    let jsons = Array(test_size).fill(json).map((item, index) => ({ ...item, index: index }));
     let name = 'sqlite_test';
     let func = () => { console.log("hello") };
     let bool = true;
@@ -68,7 +70,7 @@ describe('sql Storage functionality', () => {
         assert.deepEqual(data, str);
     })
 
-    test('deletr function, boolean, number, string', async () => {
+    test('delete function, boolean, number, string', async () => {
         await store.remove(2);
         await store.remove(3);
         await store.remove(4);
@@ -84,7 +86,7 @@ describe('sql Storage functionality', () => {
         // get the all
         let data = await store.all();
         // check if files where created
-        assert.deepEqual(data, jsons);
+        assert.deepEqual(data.map(v => v.value), jsons);
     }, 100000000)
 
     // delete many files
@@ -103,7 +105,7 @@ describe('Sqlite Storage keyvalue', () => {
     });
     let name = 'sqlite_test_keyvalue';
     // fill with ramdom alphanumric keys
-    let keys = Array(10).fill(0).map(() => Math.random().toString(36).substring(7));
+    let keys = Array(test_size).fill(0).map(() => Math.random().toString(36).substring(7));
     let json = { str: 'test', num: 123, bool: true };
     // create a new storage
     let store;
@@ -145,7 +147,8 @@ describe('Sqlite Storage keyvalue', () => {
         Promise.all(keys.map( async (k, i) => await store.set(k, json)));
         // get all files
         let data = await store.all();
-        assert.deepEqual(data, Array(keys.length).fill(json));
+        data = data.map(v => ({ key: v.key, value: v.value }));
+        assert.deepEqual(data, keys.map(k => ({ key: k, value: json })));
     }, 100000000)
 
     // delete everything

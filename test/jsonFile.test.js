@@ -2,6 +2,8 @@ import Storage from '../index.js'
 import assert from 'assert';
 import fs from 'fs';
 
+let test_size = 100;
+
 describe('jsonFile Storage functionality', () => {
     let storage = new Storage({
         type: 'jsonFile',
@@ -9,13 +11,14 @@ describe('jsonFile Storage functionality', () => {
     });
     // 
     let json = { str: 'test', num: 123, bool: true };
-    let jsons = Array(10).fill(json).map((item, index) => ({ ...item, index: index }));
+    let jsons = Array(test_size).fill(json).map((item, index) => ({ ...item, index: index }));
     let name = 'jsonFile_test';
     let func = () => { console.log("hello") };
     let bool = true;
     let num = 123;
     let str = 'test';
     let store;
+
     test('create json file', async () => {
         // check if direcotry was created
         // create a new storage
@@ -83,7 +86,7 @@ describe('jsonFile Storage functionality', () => {
         // get the all
         let data = await store.all();
         // check if files where created
-        assert.deepEqual(data, jsons);
+        assert.deepEqual(data.map(j => j.value), jsons);
     }, 100000000)
 
     // delete many files
@@ -102,7 +105,7 @@ describe('Sqlite Storage keyvalue', () => {
     });
     let name = 'jsonFile_test_keyvalue';
     // fill with ramdom alphanumric keys
-    let keys = Array(1000).fill(0).map(() => Math.random().toString(36).substring(7));
+    let keys = Array(test_size).fill(0).map(() => Math.random().toString(36).substring(7));
     let json = { str: 'test', num: 123, bool: true };
     // create a new storage
     let store;
@@ -144,7 +147,7 @@ describe('Sqlite Storage keyvalue', () => {
         Promise.all(keys.map( async (k, i) => await store.set(k, json)));
         // get all files
         let data = await store.all();
-        assert.deepEqual(data, Array(keys.length).fill(json));
+        assert.deepEqual(data, keys.map((k, i) => ({key: k, value: json })));
     }, 100000000)
 
     // delete everything

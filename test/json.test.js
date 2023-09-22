@@ -2,13 +2,15 @@ import Storage from '../index.js'
 import assert from 'assert';
 import fs from 'fs';
 
+let test_size = 100;
+
 describe('JSON Storage functionality', () => {
     let storage = new Storage({
         type: 'json',
         keyValue: false,
     });
     let json = { str: 'test', num: 123, bool: true };
-    let jsons  = Array(1000).fill(json).map((item, index) => ({ ...item, index: index }));
+    let jsons  = Array(test_size).fill(json).map((item, index) => ({ ...item, index: index }));
     let name = 'json_test';
     let store;
     // create a new storage
@@ -51,7 +53,7 @@ describe('JSON Storage functionality', () => {
     // get all files
     test('get all files', async () => {
         let data = await store.all();
-        assert.deepEqual(data, jsons);
+        assert.deepEqual(data.map(j => j.value), jsons);
     })
 
     // delete many files
@@ -59,8 +61,6 @@ describe('JSON Storage functionality', () => {
         await store.delete();
         assert.equal(fs.existsSync('./storage/' + name), false);
     })
-
-
 
 })
 
@@ -71,7 +71,7 @@ describe('JSON Storage keyvalue', () => {
     });
     let name = 'json_test_keyvalue';
     // fill with ramdom alphanumric keys
-    let keys = Array(10).fill(0).map(() => Math.random().toString(36).substring(7));
+    let keys = Array(test_size).fill(0).map(() => Math.random().toString(36).substring(7));
     let json = { str: 'test', num: 123, bool: true };
     let keyValue_store;
     // create a new storage
@@ -113,7 +113,11 @@ describe('JSON Storage keyvalue', () => {
     // get all files
     test('get all files', async () => {
         let data = await keyValue_store.all();
-        assert.deepEqual(data, Array(keys.length).fill(json));
+        // sort by key
+        data = data.sort((a, b) => a.key > b.key ? 1 : -1);
+        let expected = keys.map(k => ({ key: k, value: json })).sort((a, b) => a.key > b.key ? 1 : -1);
+        // check if all keys are there
+        assert.deepEqual(data,  expected);
     })
 
     // delete everything
@@ -123,6 +127,5 @@ describe('JSON Storage keyvalue', () => {
     })
 
 })
-
 
 
