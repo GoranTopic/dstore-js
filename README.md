@@ -1,19 +1,17 @@
 Storage-js
 =======
 #### Ever wish writing stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fret no more. 
-
-
 ## Installation
 ```
-npm install storage-js
+npm install storing-me
 ```
 ## JSON Type
 ```javascript
-import Storage from 'storage-js'
+import Storage from 'storing-me'
 
 let storage = new Storage({
         type: 'json', // sqlite, csv, ..etc
-        keyvalue: false,
+        keyValue: false,
         path: './my_storages', // default: ./storage/
     });
 
