@@ -7,6 +7,7 @@ import sqliteStorage from './modules/sqliteStorage.js';
 import jsonStorage from './modules/jsonStorage.js';
 import jsonFileStorage from './modules/jsonFileStorage.js';
 import binaryStorage from './modules/binaryStorage.js';
+import mongodbStorage from './modules/mongodbStorage.js';
 
 /*
 // hash a new name based on the values
@@ -37,11 +38,13 @@ try{  // get the check list form memory
 */
 
 class Storage {
-    constructor({ type, path, keyValue, mutex }){
+    constructor({ type, path, keyValue, mutex, url, database }){
         this.type = type;
         this.path = path;
         this.keyValue = keyValue;
         this.mutex = mutex;
+        this.url = url;
+        this.database = database;
     }
 
     async open(name) {
@@ -50,6 +53,9 @@ class Storage {
             type: this.type, 
             path: this.path,
             keyValue: this.keyValue,
+            mutex: this.mutex,
+            url: this.url,
+            database: this.database
         });
         // open database
         await store.open(name);
@@ -60,7 +66,7 @@ class Storage {
 
 
 class Store {
-    constructor({ type, path, keyValue, mutex }) {
+    constructor({ type, path, keyValue, mutex, url, database }) {
         // handle path 
         if(path){
             let { dir, name } = parsePath(path);
@@ -87,6 +93,15 @@ class Store {
             this.storage = new sqliteStorage();
         } else if(type === 'binary') {
             this.storage = new binaryStorage();
+        } else if(type === 'mongodb') {
+            // if url or database is not defined throw an error
+            if(!url || !database) throw new Error('url and database must be defined');
+            // set mutex to null, because mongodb is already thread safe
+            this.mutex = null;
+            // disable keyValue, because mongodb is a key value storage
+            this.keyValue = false;
+            // create the storage
+            this.storage = new mongodbStorage({ url, database });
         } else // if type is not supported
             throw new Error(`type ${type} is not supported`);
         // handle indexing of values, if keyValue is false
@@ -138,10 +153,10 @@ class Store {
 
     _handleInputs(first, second) {
         let key, value;
-        if(this.keyValue) {
+        if(this.keyValue){
             key = first;
             value = second;
-        } else {
+        }else{
             key = ++this.index;
             value = first;
         }

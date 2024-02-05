@@ -36,6 +36,35 @@ await store.delete()
 
 ```
 
+## Mongodb 
+```javascript
+import Storage from 'storing-me'
+
+let storage = new Storage({
+        type: 'mongodb',
+        url: 'mongodb://0.0.0.0:27017',
+        database: 'my_db'
+    });
+
+// make a store objec which will match a collection
+let store = await storage.open(name);
+
+// save json file
+await store.set( { str: 'test', num: 123, bool: true } );
+
+// get json file
+let [ data ] = await store.get({ str: 'test' }); // { str: 'test', num: 123, bool: true }
+
+// remove archive
+await store.remove({ str: 'test' });
+
+// get all record 
+let all = await store.all();
+
+// drop collection
+await store.delete();
+```
+
 ## Options
 ```javascript
 new Storage({
@@ -43,5 +72,7 @@ new Storage({
   path, // path where to store the db                   
   keyValue, // are we using a keyvalue pair to store data?  default: false           
   mutex, // use a mutex to avoid collisions? default: true
+  url, // used of Mongodb and other network dbs
+  database, // used of db like mongo
   })
 ```
