@@ -1,13 +1,13 @@
-Storage-js
+dstore-js
 =======
 #### Ever wish writing stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fret no more. 
 ## Installation
 ```
-npm install storing-me
+npm install dstore-js
 ```
 ## JSON Type
 ```javascript
-import Storage from 'storing-me'
+import Storage from 'dstore-js'
 
 let storage = new Storage({
         type: 'json', // sqlite, csv, ..etc
@@ -38,7 +38,7 @@ await store.delete()
 
 ## Mongodb 
 ```javascript
-import Storage from 'storing-me'
+import Storage from 'dstore-js'
 
 let storage = new Storage({
         type: 'mongodb',
@@ -46,7 +46,36 @@ let storage = new Storage({
         database: 'my_db'
     });
 
-// make a store objec which will match a collection
+//Make a store object that will match a collection
+let store = await storage.open(name);
+
+// save json file
+await store.set( { str: 'test', num: 123, bool: true } );
+
+// get json file
+let [ data ] = await store.get({ str: 'test' }); // { str: 'test', num: 123, bool: true }
+
+// remove archive
+await store.remove({ str: 'test' });
+
+// get all record 
+let all = await store.all();
+
+// drop collection
+await store.delete();
+```
+
+## Mongodb Files
+```javascript
+import Storage from 'dstore-js'
+
+let storage = new Storage({
+        type: 'mongodb',
+        url: 'mongodb://0.0.0.0:27017',
+        database: 'my_db'
+    });
+
+//Make a store object that will match a collection
 let store = await storage.open(name);
 
 // save json file
