@@ -1,185 +1,162 @@
-import fs from 'fs';
-import osPath from 'path';
-import parsePath from './utils/parsePath.js';      
-import { Mutex } from 'async-mutex';
-import cvsStorage from './modules/cvsStorage.js';
-import sqliteStorage from './modules/sqliteStorage.js';
-import jsonStorage from './modules/jsonStorage.js';
-import jsonFileStorage from './modules/jsonFileStorage.js';
-import binaryStorage from './modules/binaryStorage.js';
-import mongodbStorage from './modules/mongodbStorage.js';
-
-/*
-// hash a new name based on the values
-this._name = ( name ? name :  
-    hash(values, { unorderedArrays: true } )) + ".json"
-
-
-// try to read the file from memeory
-try{  // get the check list form memory
-    let string_file = fs.readFileSync(this._filename);
-    let json_list = JSON.parse(string_file);
-    // shuffe if is enabled
-    if(shuffle) 
-        json_list = [ ...json_list].sort(() => Math.random() - 0.5);
-    this._checklist = new Map(json_list);
-}catch(e){ // otherwise make a new checklist
-    this._checklist = new Map();
-}
-
-// if you want to mantain the original missing list of value after checks
-        this._filename = osPath.join( this._tmp_path, this._name);
-
-// if custom path is not defined
-       if(path === undefined) // make a tmp folder
-            this._tmp_path = tmp_path
-        else // set the directory path
-            this._tmp_path = path
-*/
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const parsePath_1 = __importDefault(require("./utils/parsePath"));
+const async_mutex_1 = require("async-mutex");
+// module export 
+const modules_1 = require("./modules");
 class Storage {
-    constructor({ type, path, keyValue, mutex, url, database }){
+    constructor({ type, path, keyValue, mutex, url, database }) {
         this.type = type;
-        this.path = path;
-        this.keyValue = keyValue;
-        this.mutex = mutex;
-        this.url = url;
-        this.database = database;
+        this.path = path !== null && path !== void 0 ? path : path_1.default.join(process.cwd(), 'storage');
+        this.keyValue = keyValue !== null && keyValue !== void 0 ? keyValue : false;
+        this.mutex = mutex !== null && mutex !== void 0 ? mutex : true;
+        this.url = url !== null && url !== void 0 ? url : '';
+        this.database = database !== null && database !== void 0 ? database : '';
     }
-
-    async open(name) {
-        // initileze the store
-        let store = new Store({ 
-            type: this.type, 
-            path: this.path,
-            keyValue: this.keyValue,
-            mutex: this.mutex,
-            url: this.url,
-            database: this.database
+    open(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // initileze the store
+            let store = new Store({
+                type: this.type,
+                path: this.path,
+                keyValue: this.keyValue,
+                mutex: this.mutex,
+                url: this.url,
+                database: this.database
+            });
+            // open database
+            yield store.open(name);
+            // return the store
+            return store;
         });
-        // open database
-        await store.open(name);
-        // return the store
-        return store;
     }
 }
-
-
 class Store {
     constructor({ type, path, keyValue, mutex, url, database }) {
+        this.add = this.set;
+        this.push = this.set;
+        this.write = this.set;
+        this.read = this.get;
+        this.all = this.getAll;
+        this.list = this.getAll;
         // handle path 
-        if(path){
-            let { dir, name } = parsePath(path);
+        if (path) {
+            let { dir, name } = (0, parsePath_1.default)(path);
             // if path is not an dir
-            if(name === 'file') throw new Error('path must be a directory');
+            if (name === 'file')
+                throw new Error('path must be a directory');
             // if path is dir
             this.path = dir;
-        } else  // working dir + /sotrage
-            this.path = osPath.join(process.cwd(), 'storage');
+        }
+        else // working dir + /sotrage
+            this.path = path_1.default.join(process.cwd(), 'storage');
         // create the directory if it does not exist
-        if(!fs.existsSync(this.path)) fs.mkdirSync(this.path);
+        if (!fs_1.default.existsSync(this.path))
+            fs_1.default.mkdirSync(this.path);
         // handle keyValue, default is true
-        this.keyValue = keyValue ?? false;
+        this.keyValue = keyValue !== null && keyValue !== void 0 ? keyValue : false;
         // handle mutex, defaul is ot use mutex
-        this.mutex = mutex === false? null : new Mutex();
+        this.mutex = mutex === false ? null : new async_mutex_1.Mutex();
         // handle type, chose the storage depending on the type
-        if(type === 'json'){
-            this.storage = new jsonStorage();
-        } else if(type === 'jsonFile') {
-            this.storage = new jsonFileStorage();
-        } else if(type === 'cvs') {
-            this.storage = new cvsStorage();
-        } else if(type === 'sqlite') {
-            this.storage = new sqliteStorage();
-        } else if(type === 'binary') {
-            this.storage = new binaryStorage();
-        } else if(type === 'mongodb') {
+        if (type === 'json') {
+            this.storage = new modules_1.JsonStorage();
+        }
+        else if (type === 'jsonFile') {
+            this.storage = new modules_1.JsonFileStorage();
+        }
+        else if (type === 'cvs') {
+            this.storage = new modules_1.CvsStorage();
+        }
+        else if (type === 'sqlite') {
+            this.storage = new modules_1.SqliteStorage();
+        }
+        else if (type === 'binary') {
+            this.storage = new modules_1.BinaryStorage();
+        }
+        else if (type === 'mongodb') {
             // if url or database is not defined throw an error
-            if(!url || !database) throw new Error('url and database must be defined');
+            if (!url || !database)
+                throw new Error('url and database must be defined');
             // set mutex to null, because mongodb is already thread safe
             this.mutex = null;
             // disable keyValue, because mongodb is a key value storage
             this.keyValue = false;
             // create the storage
-            this.storage = new mongodbStorage({ url, database });
-        } else // if type is not supported
+            this.storage = new modules_1.MongodbStorage({ url, database });
+        }
+        else // if type is not supported
             throw new Error(`type ${type} is not supported`);
         // handle indexing of values, if keyValue is false
-        if(!this.keyValue) this.index = 0;
+        this.index = (!this.keyValue) ? 0 : -1;
     }
-
-    async open(name) {
-        // open database
-        await this.storage.open({name: name, path: this.path});
+    open(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // open database
+            yield this.storage.open({ name: name, path: this.path });
+        });
     }
-
-    async set(first, second) {
-        let { key, value } = this._handleInputs(first, second);
-        // promise to run
-        return await this._mutex(
-            async () => await this.storage.set(key, value)
-        );
+    set(first, second) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let { key, value } = this._handleInputs(first, second);
+            // promise to run
+            return yield this._mutex(() => __awaiter(this, void 0, void 0, function* () { return yield this.storage.set(key, value); }));
+        });
     }
-
-    async get(key) {
-        return await this._mutex(
-            async () => await this.storage.get(key)
-        );
+    get(key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._mutex(() => __awaiter(this, void 0, void 0, function* () { return yield this.storage.get(key); }));
+        });
     }
-
-    async getAll() {
-        return await this._mutex(
-            async () => await this.storage.getAll()
-        );
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._mutex(() => __awaiter(this, void 0, void 0, function* () { return yield this.storage.getAll(); }));
+        });
     }
-
-    async has(key) {
-        return await this._mutex(
-            async () => await (await this.storage.get(key))? true : false
-        );
+    has(key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._mutex(() => __awaiter(this, void 0, void 0, function* () { return (yield (yield this.storage.get(key))) ? true : false; }));
+        });
     }
-
-    async remove(key) {
-        return await this._mutex(
-            async () => await this.storage.remove(key)
-        );
+    remove(key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._mutex(() => __awaiter(this, void 0, void 0, function* () { return yield this.storage.remove(key); }));
+        });
     }
-
-    async delete() {
-        return await this._mutex(
-            async () => await this.storage.delete()
-        );
+    delete() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this._mutex(() => __awaiter(this, void 0, void 0, function* () { return yield this.storage.delete(); }));
+        });
     }
-
     _handleInputs(first, second) {
         let key, value;
-        if(this.keyValue){
+        if (this.keyValue) {
             key = first;
             value = second;
-        }else{
+        }
+        else {
             key = ++this.index;
             value = first;
         }
         return { key, value };
     }
-
     _mutex(promise) {
-        return this.mutex?
+        return this.mutex ?
             this.mutex.runExclusive(promise) :
             promise();
     }
-
-
-
-    add = this.set;
-    push = this.set;
-    write = this.set;
-
-    read = this.get;
-
-    all = this.getAll;
-    list = this.getAll;
 }
-
-
-export default Storage;
+exports.default = Storage;

@@ -9,36 +9,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class SomeStorage {
+class Storage {
+    // this function opens the storage
     open(_a) {
         return __awaiter(this, arguments, void 0, function* ({ name, path }) {
-            // this function opens the storage
+            throw new Error('Method not implemented.');
         });
     }
+    // this function sets a value for a key
     set(key, value) {
         return __awaiter(this, void 0, void 0, function* () {
-            // this function sets a value for a key
+            throw new Error('Method not implemented.');
         });
     }
+    // this function retrives a value with a key
     get(key) {
         return __awaiter(this, void 0, void 0, function* () {
-            // this function retrives a value with a key
+            throw new Error('Method not implemented.');
         });
     }
+    // this function returns all the values in the storage
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            // this function returns all the values in the storage
+            throw new Error('Method not implemented.');
         });
     }
+    // this function removes a value with a key
     remove(key) {
         return __awaiter(this, void 0, void 0, function* () {
-            // this function removes a value with a key
+            throw new Error('Method not implemented.');
         });
     }
+    // this function deletes the entire storage
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
-            // this function deletes the entire storage
+            throw new Error('Method not implemented.');
         });
     }
 }
-exports.default = SomeStorage;
+exports.default = Storage;

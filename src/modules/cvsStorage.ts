@@ -1,14 +1,14 @@
 class SomeStorage{
 
-    async open({name, path}){
+    async open({name, path} : {name: string, path: string}) {
         // this function opens the storage
     }
 
-    async set(key, value){
+    async set(key: string, value: any) {
         // this function sets a value for a key
     }
 
-    async get(key) {
+    async get(key: string) {
         // this function retrives a value with a key
     }
 
@@ -16,7 +16,7 @@ class SomeStorage{
         // this function returns all the values in the storage
     }
 
-    async remove(key) {
+    async remove(key: string) {
         // this function removes a value with a key
     }
 
