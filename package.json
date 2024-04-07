@@ -2,9 +2,9 @@
   "name": "storing-me",
   "version": "1.0.3",
   "description": "A practical Storage tool",
-  "main": "index.js",
+  "main": "./js/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsup index.ts --minify --dts --format cjs,esm --out-dir js",
     "test": "node --max-old-space-size=65536 --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "repository": {
@@ -40,6 +40,7 @@
     "chai": "^4.3.8",
     "files-js": "^1.0.2",
     "mocha": "^10.2.0",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.4"
   },
   "directories": {

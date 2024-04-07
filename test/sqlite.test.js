@@ -1,15 +1,17 @@
-import Storage from '../index.js'
+import Storage from '../js/index.js'
 import assert from 'assert';
 import fs from 'fs';
 
 let test_size = 100;
+
+let working_dir = './storage/';
 
 describe('sql Storage functionality', () => {
     let storage = new Storage({
         type: 'sqlite',
         keyValue: false,
     });
-    // 
+    // we will test all of these
     let json = { str: 'test', num: 123, bool: true };
     let jsons = Array(test_size).fill(json).map((item, index) => ({ ...item, index: index }));
     let name = 'sqlite_test';
@@ -22,7 +24,7 @@ describe('sql Storage functionality', () => {
         // check if direcotry was created
         // create a new storage
         store = await storage.open(name);
-        assert.equal(fs.existsSync('./storage/' + name + '.sqlite'), true);
+        assert.equal(fs.existsSync( working_dir + name + '.sqlite'), true);
     }) 
 
     // save json file
@@ -92,7 +94,7 @@ describe('sql Storage functionality', () => {
     // delete many files
     test('directory deleted', async () => { 
         await store.delete();
-        assert.equal(fs.existsSync('./storage/' + name), false);
+        assert.equal(fs.existsSync( working_dir + name + '.sqlite'), false);
     }, 100000000)
 
 })
@@ -113,7 +115,7 @@ describe('Sqlite Storage keyvalue', () => {
         // check if direcotry was created
         // create a new storage
         store = await storage.open(name);
-        assert.equal(fs.existsSync('./storage/' + name + '.sqlite'), true);
+        assert.equal(fs.existsSync( working_dir + name + '.sqlite'), true);
     }) 
     
     test('save and get file', async () => {
@@ -154,7 +156,7 @@ describe('Sqlite Storage keyvalue', () => {
     // delete everything
     test('directory deleted', async () => { 
         await store.delete();
-        assert.equal(fs.existsSync('./storage/' + name + '.sqlite'), false);
+        assert.equal(fs.existsSync('./js/storage/' + name + '.sqlite'), false);
     }, 100000000)
 
 })

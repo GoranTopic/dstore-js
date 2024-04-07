@@ -1,4 +1,4 @@
-import Storage from '../index.js'
+import Storage from '../js/index.js'
 import assert from 'assert';
 import fs from 'fs';
 

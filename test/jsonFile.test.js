@@ -1,8 +1,10 @@
-import Storage from '../index.js'
+import Storage from '../js/index.js'
 import assert from 'assert';
 import fs from 'fs';
 
 let test_size = 100;
+
+let working_dir = './storage/';
 
 describe('jsonFile Storage functionality', () => {
     let storage = new Storage({
@@ -23,7 +25,7 @@ describe('jsonFile Storage functionality', () => {
         // check if direcotry was created
         // create a new storage
         store = await storage.open(name);
-        assert.equal(fs.existsSync('./storage/' + name + '.json'), true);
+        assert.equal(fs.existsSync(working_dir + name + '.json'), true);
     }) 
 
     // save json file
@@ -92,7 +94,7 @@ describe('jsonFile Storage functionality', () => {
     // delete many files
     test('directory deleted', async () => { 
         await store.delete();
-        assert.equal(fs.existsSync('./storage/' + name), false);
+        assert.equal(fs.existsSync(working_dir + name), false);
     }, 100000000)
 
 })
@@ -113,7 +115,7 @@ describe('Sqlite Storage keyvalue', () => {
         // check if direcotry was created
         // create a new storage
         store = await storage.open(name);
-        assert.equal(fs.existsSync('./storage/' + name + '.json'), true);
+        assert.equal(fs.existsSync(working_dir + name + '.json'), true);
     }) 
     
     test('save and get file', async () => {
@@ -153,7 +155,7 @@ describe('Sqlite Storage keyvalue', () => {
     // delete everything
     test('directory deleted', async () => { 
         await store.delete();
-        assert.equal(fs.existsSync('./storage/' + name + '.json'), false);
+        assert.equal(fs.existsSync(working_dir + name + '.json'), false);
     }, 100000000)
 
 })

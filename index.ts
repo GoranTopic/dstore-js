@@ -1,2 +1,2 @@
-import Storage  from './src/storage.js'
+import Storage  from './src/storage'
 export default Storage

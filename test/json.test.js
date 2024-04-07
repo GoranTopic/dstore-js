@@ -1,8 +1,10 @@
-import Storage from '../index.js'
+import Storage from '../js/index.js'
 import assert from 'assert';
 import fs from 'fs';
 
 let test_size = 100;
+
+let working_dir = './storage/';
 
 describe('JSON Storage functionality', () => {
     let storage = new Storage({
@@ -23,7 +25,7 @@ describe('JSON Storage functionality', () => {
     test('save json file', async () => {
         // check if file was created
         await store.set(json);
-        assert.equal(fs.existsSync('./storage/' + name + '/0000000001.json'), true);
+        assert.equal(fs.existsSync(working_dir + name + '/0000000001.json'), true);
     })
     
     // get json file
@@ -36,7 +38,7 @@ describe('JSON Storage functionality', () => {
     test('delete file', async () => {
         // check if file was deleted
         await store.remove(1);
-        assert.equal(fs.existsSync('./storage/' + name + `/0000000001.json`), false);
+        assert.equal(fs.existsSync( working_dir + name + '/0000000001.json'), false);
     })
 
     // save many files
@@ -45,7 +47,7 @@ describe('JSON Storage functionality', () => {
         Promise.all(jsons.map( async (v, i) => await store.set(v)));
         // check if files where created
         let allFiles = jsons.some((v, i) =>
-            !fs.existsSync('./storage/' + name + `/${String(i + 1).padStart(10, '0')}.json`)
+            !fs.existsSync( working_dir + name + `/${String(i + 1).padStart(10, '0')}.json`)
         );
         assert.equal(allFiles, true);
     })
@@ -59,7 +61,7 @@ describe('JSON Storage functionality', () => {
     // delete many files
     test('directory deleted', async () => { 
         await store.delete();
-        assert.equal(fs.existsSync('./storage/' + name), false);
+        assert.equal(fs.existsSync( working_dir + name), false);
     })
 
 })
@@ -84,7 +86,7 @@ describe('JSON Storage keyvalue', () => {
     test('save json file', async () => {
         // check if file was created
         await keyValue_store.set(keys[0], json);
-        assert.equal(fs.existsSync('./storage/' + name + `/${keys[0]}.json`), true);
+        assert.equal(fs.existsSync( working_dir + name + `/${keys[0]}.json`), true);
     })
 
     // get json file
@@ -97,7 +99,7 @@ describe('JSON Storage keyvalue', () => {
     test('delete file', async () => {
         // check if file was deleted
         await keyValue_store.remove(keys[0]);
-        assert.equal(fs.existsSync('./storage/' + name + `/${keys[0]}.json`), false);
+        assert.equal(fs.existsSync( working_dir + name + `/${keys[0]}.json`), false);
     })
 
 
@@ -106,7 +108,7 @@ describe('JSON Storage keyvalue', () => {
         // check if files was created
         Promise.all(keys.map( async (k, i) => await keyValue_store.set(k, json)));
         // check if files where created
-        let allFiles = keys.some((v, i) => !fs.existsSync('./storage/' + name + `/${v}.json`));
+        let allFiles = keys.some((v, i) => !fs.existsSync( working_dir + name + `/${v}.json`));
         assert.equal(allFiles, true);
     })
 
@@ -123,7 +125,7 @@ describe('JSON Storage keyvalue', () => {
     // delete everything
     test('directory deleted', async () => { 
         await keyValue_store.delete();
-        assert.equal(fs.existsSync('./storage/' + name), false);
+        assert.equal(fs.existsSync( working_dir + name), false);
     })
 
 })

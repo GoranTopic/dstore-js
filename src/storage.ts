@@ -17,7 +17,7 @@ import {
 class Storage {
     //* this is jsut an initilizer for the store class */
     private type: string;
-    private path: string;
+    private path: string | undefined;
     private keyValue: boolean;
     private mutex: boolean;
     private url: string;
@@ -32,7 +32,7 @@ class Storage {
         database?: string
     }) {
         this.type = type;
-        this.path = path ?? osPath.join(process.cwd(), 'storage');
+        this.path = path;
         this.keyValue = keyValue ?? false;
         this.mutex = mutex ?? true;
         this.url = url ?? '';
@@ -73,14 +73,17 @@ class Store {
         database?: string
     }) {
         // handle path 
+        console.log('input path:', path);
         if(path){
             let { dir, name } = parsePath(path);
             // if path is not an dir
             if(name === 'file') throw new Error('path must be a directory');
             // if path is dir
             this.path = dir;
+            console.log('dir:', dir);
         } else  // working dir + /sotrage
             this.path = osPath.join(process.cwd(), 'storage');
+        console.log('this.path:', this.path);
         // create the directory if it does not exist
         if(!fs.existsSync(this.path)) fs.mkdirSync(this.path);
         // handle keyValue, default is true
