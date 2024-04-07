@@ -1,6 +1,6 @@
 {
   "name": "storing-me",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A practical Storage tool",
   "main": "./js/index.js",
   "scripts": {
