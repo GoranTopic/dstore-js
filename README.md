@@ -1,6 +1,6 @@
 dstore-js
 =======
-#### Ever wish writing stuff to disk was simple? Ever wish it would be easy to switch between databases? Well, fret no more. 
+#### Do you ever wish writing stuff to disk was simple? Do you ever wish it would be easy to switch between databases? Well, fret no more. 
 ## Installation
 ```
 npm install dstore-js
