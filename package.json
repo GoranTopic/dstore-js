@@ -1,6 +1,6 @@
 {
-  "name": "storing-me",
-  "version": "1.0.4",
+  "name": "dstore-js",
+  "version": "1.0.5",
   "description": "A practical Storage tool",
   "main": "./js/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GoranTopic/storage-js.git"
+    "url": "git+https://github.com/GoranTopic/dstore-js.git"
   },
   "type": "module",
   "keywords": [
@@ -23,11 +23,10 @@
   "author": "Goran Topic",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GoranTopic/storage-js/issues"
+    "url": "https://github.com/GoranTopic/dstore-js/issues"
   },
-  "homepage": "https://github.com/GoranTopic/storage-js#readme",
+  "homepage": "https://github.com/GoranTopic/dstore-js#readme",
   "dependencies": {
-    "-": "^0.0.1",
     "async-mutex": "^0.4.0",
     "fs": "^0.0.1-security",
     "jest": "^29.7.0",
