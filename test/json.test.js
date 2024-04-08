@@ -12,7 +12,9 @@ describe('JSON Storage functionality', () => {
         keyValue: false,
     });
     let json = { str: 'test', num: 123, bool: true };
-    let jsons  = Array(test_size).fill(json).map((item, index) => ({ ...item, index: index }));
+    let jsons  = Array(test_size)
+        .fill(json)
+        .map((item, index) => ({ ...item, index: index }));
     let name = 'json_test';
     let store;
     // create a new storage

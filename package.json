@@ -1,6 +1,6 @@
 {
   "name": "dstore-js",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A practical Storage tool",
   "main": "./js/index.js",
   "scripts": {
@@ -33,9 +33,11 @@
     "mongodb": "^6.3.0",
     "path": "^0.12.7",
     "sqlite": "^5.0.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "stream-to-array": "^2.3.0"
   },
   "devDependencies": {
+    "@types/stream-to-array": "^2.3.3",
     "chai": "^4.3.8",
     "jest": "^29.7.0",
     "mocha": "^10.2.0",

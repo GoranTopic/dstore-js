@@ -1,8 +1,8 @@
 import Storage from './types/Storage'
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
-let files_js = require('files-js');
-const { rm_file } = files_js;
+//@ts-ignore // this is a custom module
+import { rm_file } from 'files-js'
 
 
 class sqliteStorage extends Storage {

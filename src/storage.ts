@@ -10,7 +10,8 @@ import {
     JsonStorage,
     JsonFileStorage,
     BinaryStorage,
-    MongodbStorage
+    MongodbStorage,
+    MongoFilesStorage
 } from './modules'
 
 
@@ -107,6 +108,16 @@ class Store {
             this.keyValue = false;
             // create the storage
             this.storage = new MongodbStorage({ url, database });
+        } else if(type === 'mongoFiles') {
+            // if url or database is not defined throw an error
+            if(!url || !database) throw new Error('url and database must be defined');
+            // set mutex to null, because mongodb is already thread safe
+            this.mutex = null;
+            // enable keyValue, because we must pass a binary file, 
+            // and the metadata for the filename
+            this.keyValue = true;
+            // create the storage
+            this.storage = new MongoFilesStorage({ url, database });
         } else // if type is not supported
             throw new Error(`type ${type} is not supported`);
         // handle indexing of values, if keyValue is false

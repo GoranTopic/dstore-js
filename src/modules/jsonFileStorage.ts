@@ -1,7 +1,7 @@
 import Storage from './types/Storage';
-let files_js = require('files-js');
-const { write_json, read_json, delete_json } = files_js;
 import osPath from 'path';
+// @ts-ignore // this is a custom module
+import { write_json, read_json, delete_json } from 'files-js';
 
 
 class jsonFileStorage extends Storage {

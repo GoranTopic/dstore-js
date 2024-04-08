@@ -1,17 +1,17 @@
 abstract class Storage{
 
     // this function opens the storage
-    async open({name, path} : {name: string, path: string}) : Promise<void> {
+    async open({name, path} : {name: string, path: string}) : Promise<any> {
         throw new Error('Method not implemented.');
     }
 
     // this function sets a value for a key
-    async set(key: string, value: any) : Promise<void> {
+    async set(key: string, value: any) : Promise<any> {
         throw new Error('Method not implemented.');
     }
 
     // this function retrives a value with a key
-    async get(key: string) : Promise<any> {
+    async get(key: any) : Promise<any> {
         throw new Error('Method not implemented.');
     }
 
@@ -21,12 +21,12 @@ abstract class Storage{
     }
 
     // this function removes a value with a key
-    async remove(key: string) : Promise<void> {
+    async remove(key: any) : Promise<any> {
         throw new Error('Method not implemented.');
     }
 
     // this function deletes the entire storage
-    async delete() : Promise<void> {
+    async delete() : Promise<any> {
         throw new Error('Method not implemented.');
     }
 
