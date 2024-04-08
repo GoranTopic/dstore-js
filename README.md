@@ -47,7 +47,7 @@ let storage = new Storage({
     });
 
 //Make a store object that will match a collection
-let store = await storage.open(name);
+let store = await storage.open('collection_name');
 
 // save json file
 await store.set( { str: 'test', num: 123, bool: true } );
@@ -76,11 +76,11 @@ import Storage from 'dstore-js'
 let storage = new Storage({
         type: 'mongoFiles',
         url: 'mongodb://0.0.0.0:27017',
-        database: 'my_files'
+        database: 'my_db'
     });
 
 // Create a store just like Mongodb
-let store = await storage.open(name);
+let store = await storage.open(files_collection);
 
 // pdf buffer
 let pdf_buffer = fs.readFileSync(fileTestDir + 'file.pdf');
