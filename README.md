@@ -69,29 +69,6 @@ await store.delete();
 ```
 
 ## Mongodb Files
-Mongofiles ables the ability to easily set and get values from MongoDB via Gridfs.
-
-The input for the file is in the form of a `Buffer`, `Readble` Stream, or `String`, path to the file in os for the first parameter.
-
-The second parameter is an object which must contain the property `filename`, and any additional metadata you might want to add. ;)
-
-
-The output will always be of the form:
-```typescript
-{
-        buffer: <Buffer>
-        metadata: {
-                filename: <String>
-                other_properties: <any>
-                ...
-        }
-}
-```
-Where the Metadata is the same as defined in the input and must have the filename property.
-
-Note: You can use the Mongodb store with the MongoFile store on the same database
-
-Note: Mutiple files can have the same filename, though this is not recommended and should be enforced by the user. (that means you)
 
 ```javascript
 import Storage from 'dstore-js'
@@ -136,6 +113,30 @@ await store.close()
 // drop collection
 await store.delete();
 ```
+Mongofiles ables the ability to easily set and get values from MongoDB via Gridfs.
+
+The input for the file is in the form of a `Buffer`, `Readble` Stream, or `String`, path to the file in os for the first parameter.
+
+The second parameter is an object which must contain the property `filename`, and any additional metadata you might want to add. ;)
+
+
+The output will always be of the form:
+```typescript
+{
+        buffer: <Buffer>
+        metadata: {
+                filename: <String>
+                other_properties: <any>
+                ...
+        }
+}
+```
+
+Where the Metadata is the same as defined in the input and must have the filename property.
+
+Note: You can use the Mongodb store with the MongoFile store on the same database
+
+Note: Mutiple files can have the same filename, though this is not recommended and should be enforced by the user. (that means you)
 
 ## Options
 ```javascript
