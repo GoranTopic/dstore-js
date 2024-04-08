@@ -35,6 +35,7 @@ declare class Store {
     getAll(): Promise<any>;
     has(key: any): Promise<boolean>;
     remove(key: any): Promise<void>;
+    close(): Promise<void>;
     delete(): Promise<void>;
     _handleInputs(first: any, second: any): {
         key: any;

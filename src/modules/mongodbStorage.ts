@@ -47,6 +47,11 @@ class MongodbStorage extends Storage {
         return await this.collection.deleteMany(key);
     }
 
+    async close() : Promise<void> {
+        // this function closes the storage
+        return await this.client.close();
+    }
+
     async delete() : Promise<void> {
         // this function deletes the entire storage
         await this.collection.drop();

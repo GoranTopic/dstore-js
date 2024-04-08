@@ -55,6 +55,10 @@ class jsonStorage extends Storage {
         return delete_json(osPath.join(this.path, key + '.json'));
     }
 
+    async close() : Promise<void> {
+        this.path = '';
+    }
+
     async delete() : Promise<void> {
         let files = ls_files(this.path);
         for (let i = 0; i < files.length; i++) 

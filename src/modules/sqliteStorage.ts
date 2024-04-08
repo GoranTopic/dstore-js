@@ -87,6 +87,12 @@ class sqliteStorage extends Storage {
         await this.db.exec(`DELETE FROM storage WHERE key = '${key}'`)
     }
 
+    async close() : Promise<void> {
+        // this function closes the storage
+        this.file = undefined
+        await this.db.close()
+    }
+
     async delete() {
         // this function deletes the entire storage
         await this.db.exec(`DELETE FROM storage`)

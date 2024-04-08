@@ -25,6 +25,11 @@ abstract class Storage{
         throw new Error('Method not implemented.');
     }
 
+    // this function terminates any connection to the storage
+    async close() : Promise<any> {
+        throw new Error('Method not implemented.');
+    }
+
     // this function deletes the entire storage
     async delete() : Promise<any> {
         throw new Error('Method not implemented.');

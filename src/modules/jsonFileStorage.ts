@@ -53,6 +53,11 @@ class jsonFileStorage extends Storage {
         write_json(this.json, this.path, { format: true });
     }
 
+    async close() : Promise<void> {
+        this.json = {};
+        this.path = '';
+    }
+
     async delete() : Promise<void> {
         // delete the file
         this.json = {};

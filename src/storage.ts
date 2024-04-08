@@ -161,6 +161,12 @@ class Store {
         );
     }
 
+    async close() : Promise<void> {
+        return await this._mutex(
+            async () => await this.storage.close()
+        );
+    }
+
     async delete() : Promise<void> {
         return await this._mutex(
             async () => await this.storage.delete()
