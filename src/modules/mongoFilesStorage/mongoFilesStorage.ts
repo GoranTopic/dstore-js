@@ -112,6 +112,10 @@ class MongoFilesStorage extends Storage {
                     .map(part => (part instanceof Buffer) ? part : Buffer.from(part));
                 return Buffer.concat(buffers);
             });
+            // remove the _id from the file, length, and chunkSize
+            delete file._id;
+            delete file.length;
+            delete file.chunkSize;
             // resolve the promise
             resolve({ buffer, metadata: file });
         });

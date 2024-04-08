@@ -282,6 +282,7 @@ describe('mongoFiles Storage with Buffer type', () => {
     test('collection deleted', async () => { 
         await store.delete();
     }, 100)
+
 })
 
 
