@@ -5,7 +5,7 @@ dstore-js
 ```
 npm install dstore-js
 ```
-## JSON Type
+## JSON Storage
 ```javascript
 import Storage from 'dstore-js'
 
@@ -68,7 +68,7 @@ await store.close()
 await store.delete();
 ```
 
-## Mongodb Files
+### Mongodb Files
 
 ```javascript
 import Storage from 'dstore-js'
