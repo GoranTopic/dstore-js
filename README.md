@@ -89,7 +89,7 @@ let pdf_buffer = fs.readFileSync(fileTestDir + 'file.pdf');
 await store.set(pdf_buffer, { filename: 'buffer_file.pdf' });
 
 // save pdf stream
-await store.set(fs.createReadStream('file.pdf');, { filename: 'buffer_file.pdf' });
+await store.set(fs.createReadStream('file.pdf'), { filename: 'buffer_file.pdf' });
 
 // save pdf from filesystem
 await store.set('/path/to/file.pdf', { filename: 'buffer_file.pdf' });
